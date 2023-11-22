@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+  mongodb:
+    image: docker.io/bitnami/mongodb:${MONGODB_VERSION:-4.4}
+    restart: on-failure
+    volumes:
+      - local_rocket_mongodb_data:/bitnami/mongodb
+    environment:
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_NAME: ${MONGODB_REPLICA_SET_NAME:-rs0}
+      MONGODB_PORT_NUMBER: ${MONGODB_PORT_NUMBER:-27017}
+      MONGODB_INITIAL_PRIMARY_HOST: ${MONGODB_INITIAL_PRIMARY_HOST:-mongodb}
+      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: ${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}
+      MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_ADVERTISED_HOSTNAME:-mongodb}
+      MONGODB_ENABLE_JOURNAL: ${MONGODB_ENABLE_JOURNAL:-true}
+      ALLOW_EMPTY_PASSWORD: ${ALLOW_EMPTY_PASSWORD:-yes}
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-teste}
+    ports:
+      - 27017:27017
+    networks:
+      - my_network
+
+  node-app:
+    build: ./apps
+    container_name: rocket-compilled
+    depends_on:
+      - mongodb
+    ports:
+      - 8085:80
+    environment:
+      - PORT=80
+      - MONGO_URL=mongodb://mongodb:27017/-teste
+      - ROOT_URL=https://local.marcosbrendon.com
+      # Add other environment variables as needed
+      # - MAIL_URL=smtp://user:password@mailhost:port/
+    networks:
+      - my_network
+
+volumes:
+  local_rocket_mongodb_data: {}
+
+networks:
+  my_network:
+    driver: bridge
