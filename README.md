@@ -54,6 +54,31 @@ After initialized, you can access the server at http://localhost:4000
 Please see the [requirements documentation](https://docs.rocket.chat/installing-and-updating/minimum-requirements-for-using-rocket.chat) for system requirements and more information about supported operating systems.
 Please refer to [Install Rocket.Chat](https://rocket.chat/install) to install your Rocket.Chat instance.
 
+## Running in Production
+1. Access the `apps/meteor` folder.
+
+   ```bash
+   cd apps/meteor
+   ```
+
+2. Execute the `build.sh` script located in that folder.
+
+   ```bash
+   ./build.sh
+   ```
+
+3. Return to the project's root directory.
+
+   ```bash
+   cd ../../
+   ```
+
+4. Build and launch the production environment using the following commands:
+
+   ```bash
+   docker-compose -f docker-compose-compiled.yml up
+   ```
+
 ## Feature Request
 
 [Rocket.Chat/feature-requests](https://github.com/RocketChat/feature-requests) is used to track Rocket.Chat feature requests and discussions. Click [here](https://github.com/RocketChat/feature-requests/issues/new?template=feature_request.md) to open a new feature request. [Feature Request Forums](https://forums.rocket.chat/c/feature-requests/8) stores the historical archives of old feature requests (up to 2018).
